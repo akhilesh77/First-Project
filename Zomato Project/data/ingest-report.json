@@ -1,0 +1,106 @@
+{
+  "dataset_id": "ManikaSaini/zomato-restaurant-recommendation",
+  "database_path": "C:\\Users\\Nisha\\OneDrive\\Documents\\Next Leap\\SD\\Zomato Project\\data\\restaurants.db",
+  "raw_row_count": 51717,
+  "canonical_row_count": 49843,
+  "dedupe_removed": 0,
+  "transform_summary": {
+    "row_count": 49843,
+    "null_rating_count": 9587,
+    "null_cost_count": 340,
+    "budget_band_counts": {
+      "low": 31824,
+      "medium": 12456,
+      "high": 5223,
+      "unknown": 340
+    },
+    "city_count": 1,
+    "top_cities": {
+      "Bangalore": 49843
+    }
+  },
+  "database_stats": {
+    "row_count": 49843,
+    "null_rating_count": 9587,
+    "null_cost_count": 340,
+    "budget_band_counts": {
+      "high": 5223,
+      "low": 31824,
+      "medium": 12456,
+      "unknown": 340
+    },
+    "top_cities": {
+      "Bangalore": 49843
+    }
+  },
+  "sample_queries": [
+    {
+      "name": "count_all",
+      "rows": [
+        {
+          "n": 49843
+        }
+      ]
+    },
+    {
+      "name": "by_city",
+      "rows": [
+        {
+          "city": "Bangalore",
+          "n": 49843
+        }
+      ]
+    },
+    {
+      "name": "filter_example",
+      "params": [
+        "Bangalore",
+        "medium",
+        4.0,
+        "%North Indian%"
+      ],
+      "rows": [
+        {
+          "name": "House Of Commons",
+          "city": "Bangalore",
+          "cuisines": "Continental, Asian, North Indian",
+          "aggregate_rating": 4.8,
+          "cost_for_two": 1000.0,
+          "budget_band": "medium"
+        },
+        {
+          "name": "House Of Commons",
+          "city": "Bangalore",
+          "cuisines": "Continental, Asian, North Indian",
+          "aggregate_rating": 4.8,
+          "cost_for_two": 1000.0,
+          "budget_band": "medium"
+        },
+        {
+          "name": "House Of Commons",
+          "city": "Bangalore",
+          "cuisines": "Continental, Asian, North Indian",
+          "aggregate_rating": 4.8,
+          "cost_for_two": 1000.0,
+          "budget_band": "medium"
+        },
+        {
+          "name": "House Of Commons",
+          "city": "Bangalore",
+          "cuisines": "Continental, Asian, North Indian",
+          "aggregate_rating": 4.8,
+          "cost_for_two": 1000.0,
+          "budget_band": "medium"
+        },
+        {
+          "name": "House Of Commons",
+          "city": "Bangalore",
+          "cuisines": "Continental, Asian, North Indian",
+          "aggregate_rating": 4.8,
+          "cost_for_two": 1000.0,
+          "budget_band": "medium"
+        }
+      ]
+    }
+  ]
+}

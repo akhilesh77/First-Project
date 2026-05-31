@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#ddc0c0",
+                        "surface": "#111317",
+                        "tertiary-container": "#00baa7",
+                        "secondary-container": "#5d04d2",
+                        "surface-container-low": "#1a1c20",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#111317",
+                        "on-tertiary-container": "#00443c",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "primary": "#ffb2b7",
+                        "on-tertiary": "#003731",
+                        "on-primary-fixed": "#40000e",
+                        "tertiary": "#3cddc7",
+                        "on-primary-container": "#751427",
+                        "secondary-fixed": "#eaddff",
+                        "inverse-primary": "#a43947",
+                        "surface-container-highest": "#333539",
+                        "surface-variant": "#333539",
+                        "outline-variant": "#564243",
+                        "on-secondary-fixed-variant": "#5800c8",
+                        "on-primary-fixed-variant": "#842131",
+                        "background": "#111317",
+                        "tertiary-fixed": "#62fae3",
+                        "inverse-on-surface": "#2f3035",
+                        "primary-fixed-dim": "#ffb2b7",
+                        "primary-container": "#ff7e8b",
+                        "on-secondary": "#3d008f",
+                        "on-background": "#e2e2e8",
+                        "on-error": "#690005",
+                        "outline": "#a48a8b",
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-surface": "#e2e2e8",
+                        "on-primary": "#65061d",
+                        "on-secondary-container": "#c8afff",
+                        "surface-container": "#1e2024",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#3cddc7",
+                        "on-surface": "#e2e2e8",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#00201c",
+                        "secondary": "#d1bcff",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "surface-tint": "#ffb2b7",
+                        "surface-container-high": "#282a2e",
+                        "surface-bright": "#37393e",
+                        "primary-fixed": "#ffdadb",
+                        "on-secondary-fixed": "#24005b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "container-margin": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 28, 32, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .deep-glow {
+            box-shadow: 0 40px 100px -20px rgba(255, 178, 183, 0.15);
+        }
+        .recessed-track {
+            background: rgba(12, 14, 18, 0.5);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ai-node-glow {
+            background: conic-gradient(from 0deg, #ffb2b7, #d1bcff, #3cddc7, #ffb2b7);
+            filter: blur(20px);
+            opacity: 0.4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen selection:bg-primary/30">
+<!-- Top App Bar (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl shadow-primary/5">
+<div class="flex justify-between items-center px-container-margin py-4 w-full max-w-[1440px] mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-headline-md">restaurant_menu</span>
+<h1 class="font-display-lg text-headline-md bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">GourmetAI</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-white/5 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Background (Mocked for context) -->
+<main class="pt-32 px-container-margin max-w-[1440px] mx-auto pb-40">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-lg">
+<!-- Mock Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden aspect-video relative group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A macro close-up of a gourmet molecular gastronomy dish with vibrant edible flowers and delicate foam. The lighting is dramatic and warm, highlighting the intricate textures and deep crimson colors against a dark, slate-textured plate. The overall mood is luxurious and high-tech, fitting the dark glassmorphic theme of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9pezrOZ_OLU4iLy_ujiBD796Cj7lDFn_-kSGGV0lGKZorctH8DFQygCzguDdkXUwj66-Q-m5mW_t0Czgyh3TxU6KNegazwLBqqGATUkmbrDDA2Nk7mKXQWQMIgWSJ5Xkw1GwAJmWyau_WgFMaK1UCSbDw5zZ4edjia4cnJIT0n0T20ZRxrfE0pI3v4cirbPYm_yLIYnxyngzSezf2_k0EH-03Q2Wri7wOzmMAmHbffSz5sPrCZCVJf_qrzgnn2cpvm0pcSjNTAQI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-label-md text-label-md bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20 backdrop-blur-md">Fine Dining</span>
+</div>
+</div>
+<!-- Mock Card 2 -->
+<div class="glass-panel rounded-xl p-6 flex flex-col justify-between h-full min-h-[200px]">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Neural Taste Profile</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Your AI assistant is currently mapping your preference for umami and spice levels based on recent interactions.</p>
+</div>
+<div class="flex items-center gap-4 mt-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary/20"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-secondary/20"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-tertiary/20"></div>
+</div>
+<span class="text-caption font-caption text-on-surface-variant">42 Insights Synced</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal Backdrop Overlay -->
+<div class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm transition-opacity duration-500" id="modal-backdrop"></div>
+<!-- Centered Settings & API Modal -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] w-full max-w-[500px] px-container-margin transition-all duration-500 transform opacity-100 scale-100" id="settings-modal">
+<div class="glass-panel rounded-[2rem] p-8 deep-glow relative overflow-hidden">
+<!-- Decorative AI Node behind content -->
+<div class="absolute -top-10 -right-10 w-40 h-40 ai-node-glow rounded-full"></div>
+<div class="relative z-10">
+<!-- Header -->
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Global Configuration</h2>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-70">Control your engine's connectivity</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors" onclick="closeModal()">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</button>
+</div>
+<!-- API Key Field -->
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-primary ml-1">X-API-KEY</label>
+<div class="relative flex items-center group">
+<input class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-4 pr-12 text-on-surface font-body-md focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-on-surface-variant/30" id="api-key-input" placeholder="Enter your API key" type="password" value="sk-zomato-ai-explorer-99x2-alpha"/>
+<button class="absolute right-4 text-on-surface-variant hover:text-primary transition-colors" onclick="toggleVisibility()">
+<span class="material-symbols-outlined" id="visibility-icon">visibility_off</span>
+</button>
+</div>
+<p class="text-caption font-caption text-on-surface-variant/60 italic ml-1">Keys are stored locally with 256-bit AES encryption.</p>
+</div>
+<!-- Additional Toggles (Contextual UI) -->
+<div class="space-y-4 pt-2">
+<div class="flex items-center justify-between glass-panel p-4 rounded-xl border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">offline_bolt</span>
+<span class="font-body-md text-body-md">Turbo Search Engine</span>
+</div>
+<div class="recessed-track w-12 h-6 rounded-full relative cursor-pointer" onclick="this.classList.toggle('bg-tertiary/20')">
+<div class="absolute top-1 left-1 w-4 h-4 rounded-full bg-white/80 transition-all transform translate-x-6"></div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary font-headline-md text-headline-md rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-4" onclick="saveConfig()">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">save</span>
+                        Save Configuration
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification (Hidden by default) -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] translate-y-20 opacity-0 transition-all duration-500 ease-out" id="save-toast">
+<div class="glass-panel px-6 py-4 rounded-full flex items-center gap-3 shadow-2xl border-primary/20">
+<div class="w-8 h-8 rounded-full bg-tertiary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-body-md" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Configuration Saved Successfully</span>
+</div>
+</div>
+<!-- Navigation Drawer (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-80 bg-surface-container-high/80 backdrop-blur-3xl border-r border-white/10 shadow-2xl shadow-black/50 z-40 transform -translate-x-full transition-transform duration-300" id="drawer">
+<div class="flex flex-col h-full p-container-margin">
+<div class="flex items-center gap-4 mb-10 pb-6 border-b border-white/5">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional and sleek portrait of a technology enthusiast with soft studio lighting. The person is looking confidently at the camera, wearing modern black attire. The background is a blurred high-end interior with hints of deep blues and subtle neon highlights, maintaining the intelligent luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYwa2-mo0SGx6rmHYcvbG-8SswT-25A5FdckOHKW6ywm1YRfinlLDSWOyLYNdx21EQuHAjAm5M1WOiYYQoTj8a4CoD4vsLVGrtN5IZ60LQRZgZJKl2Z3ZknlYwkK4RG0p0SdsXq1HlCTTO_OX4mQEvwV1K0JScLMdu2dKEs4K4W6YP7XGmPUs5YRazVrQQZ8sH05FOkcus38x4e5ypkYrGp-JsTbqEQM2mL6vEEMpuvBayRzXXTsqEBZMY9ep8-HqOGqzaanA1C2w"/>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">Gourmet Explorer</p>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">AI Connoisseur Level</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 text-on-surface hover:bg-white/5 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined text-tertiary">person_search</span>
+<span class="font-body-md">Dining Profile</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-primary bg-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined text-primary">key</span>
+<span class="font-body-md font-semibold">API Configuration</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface hover:bg-white/5 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined text-tertiary">workspace_premium</span>
+<span class="font-body-md">Premium Membership</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface hover:bg-white/5 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined text-tertiary">help</span>
+<span class="font-body-md">Help &amp; Support</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Bottom Nav Bar (Shared Component) - Mobile Only -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-gutter pb-6 pt-3 bg-surface-container/80 backdrop-blur-2xl border-t border-white/5 shadow-[0_-8px_32px_rgba(0,0,0,0.5)] z-50 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary/80 transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-caption font-caption">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary/80 transition-all" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-caption font-caption">Saved</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary/80 transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-caption font-caption">History</span>
+</a>
+</nav>
+<script>
+        function toggleVisibility() {
+            const input = document.getElementById('api-key-input');
+            const icon = document.getElementById('visibility-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerText = 'visibility';
+            } else {
+                input.type = 'password';
+                icon.innerText = 'visibility_off';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('settings-modal');
+            const backdrop = document.getElementById('modal-backdrop');
+            modal.style.opacity = '0';
+            modal.style.transform = 'translate(-50%, -40%)';
+            backdrop.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                backdrop.classList.add('hidden');
+            }, 500);
+        }
+
+        function saveConfig() {
+            const toast = document.getElementById('save-toast');
+            toast.style.transform = 'translate(-50%, 0)';
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.transform = 'translate(-50%, 20px)';
+                toast.style.opacity = '0';
+                setTimeout(closeModal, 600);
+            }, 2500);
+        }
+
+        // Atmosphere effect: Slight parallax on modal
+        document.addEventListener('mousemove', (e) => {
+            const modal = document.getElementById('settings-modal');
+            if (modal.classList.contains('hidden')) return;
+            
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            modal.style.transform = `translate(calc(-50% + ${xAxis}px), calc(-50% + ${yAxis}px))`;
+        });
+    </script>
+</body></html>

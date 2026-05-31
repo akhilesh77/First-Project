@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GourmetAI - Zomato Explorer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Fallback Lucide for toast and old icons if needed -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(17, 19, 23, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .deep-glow {
+            box-shadow: 0 0 40px rgba(255, 178, 183, 0.15);
+        }
+        .ai-orb {
+            background: conic-gradient(from 0deg, #ffb2b7, #d1bcff, #3cddc7, #ffb2b7);
+            filter: blur(30px);
+            opacity: 0.2;
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 126, 139, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 126, 139, 0.7); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(164, 57, 71, 0.15);
+            background: linear-gradient(135deg, rgba(255, 178, 183, 0.1), rgba(209, 188, 255, 0.1));
+        }
+        .reveal-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .shimmer-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-effect::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            animation: shimmer 2s infinite linear;
+        }
+        .glass-edge {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(24px);
+        }
+        @keyframes pulse-sparkle {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 8px rgba(255, 178, 183, 0.8)); }
+        }
+        .sparkle-pulse {
+            animation: pulse-sparkle 2s ease-in-out infinite;
+        }
+        .ai-orb-glow {
+            background: radial-gradient(circle, rgba(255, 178, 183, 0.2) 0%, transparent 70%);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        
+        /* Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: rgba(17, 19, 23, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--accent-rose, #ffb4ab);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInRight 0.4s ease-out;
+            color: #e2e2e8;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#ddc0c0",
+                        "surface": "#111317",
+                        "tertiary-container": "#00baa7",
+                        "secondary-container": "#5d04d2",
+                        "surface-container-low": "#1a1c20",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#111317",
+                        "on-tertiary-container": "#00443c",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "primary": "#ffb2b7",
+                        "on-tertiary": "#003731",
+                        "on-primary-fixed": "#40000e",
+                        "tertiary": "#3cddc7",
+                        "on-primary-container": "#751427",
+                        "secondary-fixed": "#eaddff",
+                        "inverse-primary": "#a43947",
+                        "surface-container-highest": "#333539",
+                        "surface-variant": "#333539",
+                        "outline-variant": "#564243",
+                        "on-secondary-fixed-variant": "#5800c8",
+                        "on-primary-fixed-variant": "#842131",
+                        "background": "#111317",
+                        "tertiary-fixed": "#62fae3",
+                        "inverse-on-surface": "#2f3035",
+                        "primary-fixed-dim": "#ffb2b7",
+                        "primary-container": "#ff7e8b",
+                        "on-secondary": "#3d008f",
+                        "on-background": "#e2e2e8",
+                        "on-error": "#690005",
+                        "outline": "#a48a8b",
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-surface": "#e2e2e8",
+                        "on-primary": "#65061d",
+                        "on-secondary-container": "#c8afff",
+                        "surface-container": "#1e2024",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#3cddc7",
+                        "on-surface": "#e2e2e8",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#00201c",
+                        "secondary": "#d1bcff",
+                        "on-tertiary-fixed-variant": "#005047",
+                        "surface-tint": "#ffb2b7",
+                        "surface-container-high": "#282a2e",
+                        "surface-bright": "#37393e",
+                        "primary-fixed": "#ffdadb",
+                        "on-secondary-fixed": "#24005b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "container-margin": "24px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary/30 min-h-screen pb-32 overflow-x-hidden">
+    <!-- Toast -->
+    <div id="errorToast" class="toast-container">
+        <i data-lucide="alert-circle" style="width: 20px; height: 20px;"></i>
+        <span id="toastMessage" style="font-weight: 500; font-size: 0.9rem;">An error occurred.</span>
+    </div>
+
+    <!-- Background Decoration -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] ai-orb pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] ai-orb pointer-events-none" style="animation-direction: reverse;"></div>
+
+    <!-- Ambient Radial Light -->
+    <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] ai-orb-glow -z-10 pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] ai-orb-glow opacity-50 -z-10 pointer-events-none"></div>
+
+    <!-- Top App Bar -->
+    <header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl shadow-primary/5">
+        <div class="flex justify-between items-center px-container-margin py-4 w-full max-w-[1440px] mx-auto">
+            <div class="flex items-center gap-3" style="cursor: pointer;" onclick="window.location.reload();">
+                <span class="material-symbols-outlined text-primary text-headline-md">restaurant_menu</span>
+                <span class="font-display-lg text-headline-md bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">GourmetAI</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-on-surface-variant font-label-md text-label-md">
+                <a class="text-primary hover:bg-white/5 transition-colors px-3 py-1 rounded-lg" href="#">Discover</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Initial Dashboard View -->
+    <main id="preferenceView" class="mt-24 px-container-margin max-w-lg mx-auto space-y-stack-lg relative z-10 block">
+        <!-- Welcome Section -->
+        <section class="space-y-1">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Dining Preferences</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">Configure your AI palate for personalized discovery.</p>
+        </section>
+
+        <!-- Location Search -->
+        <div class="space-y-stack-sm">
+            <label class="font-label-md text-label-md text-primary ml-1">Current Location</label>
+            <div class="relative group">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">location_on</span>
+                <select id="location" class="w-full pl-12 pr-4 py-4 glass-panel rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all border-none shadow-inner" required>
+                    <option value="" disabled selected>Select a location...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Budget Segmented Control -->
+        <div class="space-y-stack-sm">
+            <label class="font-label-md text-label-md text-primary ml-1">Budget Range</label>
+            <div class="flex p-1.5 glass-panel rounded-xl gap-1">
+                <button type="button" class="flex-1 py-2 font-label-md text-label-md rounded-lg transition-all text-on-surface-variant hover:bg-white/5" data-value="low" onclick="setBudget(this)">Low</button>
+                <button type="button" class="flex-1 py-2 font-label-md text-label-md rounded-lg transition-all bg-primary text-on-primary shadow-lg" data-value="medium" onclick="setBudget(this)">Medium</button>
+                <button type="button" class="flex-1 py-2 font-label-md text-label-md rounded-lg transition-all text-on-surface-variant hover:bg-white/5" data-value="high" onclick="setBudget(this)">High</button>
+            </div>
+        </div>
+
+        <!-- Cuisine -->
+        <div class="space-y-stack-sm">
+            <label class="font-label-md text-label-md text-primary ml-1">Favorite Cuisines</label>
+            <div class="relative group">
+                <input id="cuisine" class="w-full px-4 py-4 bg-white rounded-xl text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary transition-all border border-gray-300 shadow-inner" placeholder="e.g. Italian, Sushi, North Indian" type="text" value="North Indian" required/>
+            </div>
+        </div>
+
+        <!-- Rating Slider -->
+        <div class="space-y-stack-sm">
+            <div class="flex justify-between items-center mb-2">
+                <label class="font-label-md text-label-md text-primary ml-1">Minimum Rating</label>
+                <span class="font-display-lg text-headline-md text-secondary" id="rating-value">4.0</span>
+            </div>
+            <input id="minRating" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" max="5" min="0" step="0.1" type="range" value="4.0" oninput="document.getElementById('rating-value').textContent = parseFloat(this.value).toFixed(1)"/>
+            <div class="flex justify-between px-1">
+                <span class="font-caption text-caption text-on-surface-variant">0.0</span>
+                <span class="font-caption text-caption text-on-surface-variant">2.5</span>
+                <span class="font-caption text-caption text-on-surface-variant">5.0</span>
+            </div>
+        </div>
+
+        <!-- Additional Preferences -->
+        <div class="space-y-stack-sm">
+            <label class="font-label-md text-label-md text-primary ml-1">Special Requirements</label>
+            <textarea id="additionalPrefs" class="w-full p-4 glass-panel rounded-xl text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all border-none h-32 resize-none shadow-inner" placeholder="e.g., Rooftop seating, quiet atmosphere, family-friendly..."></textarea>
+        </div>
+        
+        <!-- Number of Recommendations -->
+        <div class="space-y-stack-sm">
+            <label class="font-label-md text-label-md text-primary ml-1">Number of Recommendations</label>
+            <div class="relative group">
+                <select id="recommendationCount" class="w-full px-4 py-4 glass-panel rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all border-none shadow-inner" required>
+                    <option value="3">3</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="height: 100px;"></div>
+    </main>
+
+    <!-- Bottom Anchored CTA (for Preference View) -->
+    <div id="ctaContainer" class="fixed bottom-0 left-0 w-full p-container-margin z-50 pointer-events-none">
+        <div class="max-w-lg mx-auto flex flex-col gap-4">
+            <button onclick="generateRecommendations(event)" class="w-full pointer-events-auto py-5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-display-lg text-headline-md rounded-2xl shadow-2xl animate-pulse-glow flex items-center justify-center gap-3 active:scale-95 transition-transform">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+                Discover Restaurants
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State Skeleton (Hidden initially) -->
+    <main id="loadingSkeleton" class="pt-28 pb-32 px-container-margin max-w-[1440px] mx-auto min-h-screen relative overflow-hidden" style="display: none;">
+        <!-- Status Message & Sparkle -->
+        <div class="flex flex-col items-center justify-center mb-12 text-center mt-8">
+            <div class="mb-4 sparkle-pulse text-primary">
+                <span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+            </div>
+            <p class="font-headline-md text-headline-md text-on-surface animate-pulse">
+                AI is curating your perfect dining experience...
+            </p>
+            <p class="font-body-md text-body-md text-on-surface-variant/60 mt-2">
+                Analyzing taste profiles and culinary trends
+            </p>
+        </div>
+        
+        <!-- Skeleton Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-12 glass-edge rounded-xl bg-white/5 p-8 shimmer-effect relative min-h-[220px]">
+                <div class="flex flex-col gap-4">
+                    <div class="h-8 w-1/3 bg-white/10 rounded-lg"></div>
+                    <div class="h-4 w-full bg-white/5 rounded-full"></div>
+                    <div class="h-4 w-5/6 bg-white/5 rounded-full"></div>
+                </div>
+            </div>
+            <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="glass-edge bg-surface-container-low rounded-xl overflow-hidden shimmer-effect h-[400px]">
+                    <div class="h-3/5 bg-white/5"></div>
+                    <div class="p-6 space-y-4">
+                        <div class="h-6 w-3/4 bg-white/10 rounded-md"></div>
+                        <div class="flex gap-2">
+                            <div class="h-4 w-12 bg-white/5 rounded-full"></div>
+                            <div class="h-4 w-12 bg-white/5 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Results View (Hidden initially) -->
+    <main id="resultsView" class="pt-24 pb-32 px-container-margin max-w-2xl mx-auto space-y-stack-lg" style="display: none;">
+        <!-- AI Summary Banner -->
+        <section id="aiSummaryBanner" class="reveal-animation glass-card rounded-xl p-6 border-l-4 border-primary" style="display: none;">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                <h2 class="font-headline-md text-headline-md text-primary">✨ AI Insights</h2>
+            </div>
+            <p id="aiSummaryText" class="font-body-md text-on-surface-variant leading-relaxed"></p>
+        </section>
+
+        <!-- Restaurant List -->
+        <div id="recommendationsContainer" class="space-y-stack-md">
+            <!-- Cards injected here -->
+        </div>
+
+        <!-- Search Meta Footer -->
+        <div id="searchMetaFooter" class="glass-card rounded-xl p-4 mt-8 flex justify-between items-center text-caption font-caption text-on-surface-variant">
+            <div>
+                Model: <span id="metaModel" class="text-primary"></span>
+            </div>
+            <div>
+                Candidates: <span id="metaCandidates" class="text-tertiary"></span>
+            </div>
+            <div>
+                Latency: <span id="metaLatency" class="text-secondary"></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button (for Results View) -->
+    <button id="refineBtn" onclick="window.location.reload();" class="fixed bottom-12 right-6 z-50 bg-primary text-on-primary font-label-md text-label-md px-6 py-4 rounded-full shadow-2xl shadow-primary/40 items-center gap-2 active:scale-95 transition-transform" style="display: none;">
+        <span class="material-symbols-outlined">tune</span>
+        Refine Search
+    </button>
+
+    <script>
+        // Set up Lucide for static icons just in case
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // Budget Selection
+        let selectedBudget = 'medium';
+        function setBudget(btn) {
+            const buttons = btn.parentElement.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.classList.remove('bg-primary', 'text-on-primary', 'shadow-lg');
+                b.classList.add('text-on-surface-variant', 'hover:bg-white/5');
+            });
+            btn.classList.remove('text-on-surface-variant', 'hover:bg-white/5');
+            btn.classList.add('bg-primary', 'text-on-primary', 'shadow-lg');
+            selectedBudget = btn.getAttribute('data-value');
+        }
+
+        // Simple parallax effect for AI orbs
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.ai-orb');
+            if (orbs.length > 0) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                orbs[0].style.transform = `translate(${x * 50}px, ${y * 50}px) rotate(${x * 360}deg)`;
+                if(orbs[1]) orbs[1].style.transform = `translate(${-x * 50}px, ${-y * 50}px) rotate(${-x * 360}deg)`;
+            }
+        });
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLocations();
+        });
+
+        async function fetchLocations() {
+            const locationSelect = document.getElementById('location');
+            try {
+                const res = await fetch('/v1/locations');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+
+                const grouped = {};
+                for (const entry of data.locations) {
+                    const city = entry.city;
+                    if (!grouped[city]) grouped[city] = [];
+                    grouped[city].push(entry.locality);
+                }
+
+                locationSelect.innerHTML = '<option value="" disabled selected>Select a location...</option>';
+                const cities = Object.keys(grouped).sort();
+                for (const city of cities) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = city;
+
+                    const cityOpt = document.createElement('option');
+                    cityOpt.value = city;
+                    cityOpt.textContent = `All of ${city}`;
+                    optgroup.appendChild(cityOpt);
+
+                    const localities = grouped[city].sort();
+                    for (const locality of localities) {
+                        const opt = document.createElement('option');
+                        opt.value = locality;
+                        opt.textContent = locality;
+                        optgroup.appendChild(opt);
+                    }
+                    locationSelect.appendChild(optgroup);
+                }
+                
+                if (locationSelect.options.length > 0) {
+                    locationSelect.selectedIndex = 0;
+                }
+            } catch (err) {
+                console.error('Failed to load locations:', err);
+                locationSelect.innerHTML = `
+                    <option value="" disabled selected>Select a location...</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                `;
+            }
+        }
+
+        function showToast(message, isError = true) {
+            const toast = document.getElementById('errorToast');
+            const toastMsg = document.getElementById('toastMessage');
+            
+            toastMsg.innerText = message;
+            
+            if (isError) {
+                toast.style.borderColor = '#ffb4ab';
+            } else {
+                toast.style.borderColor = '#3cddc7';
+            }
+
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4000);
+        }
+
+        async function generateRecommendations(e) {
+            if (e) e.preventDefault();
+
+            const locationVal = document.getElementById('location').value;
+            if(!locationVal) {
+                showToast("Please select a location first.");
+                return;
+            }
+
+            const cuisineVal = document.getElementById('cuisine').value;
+            const minRatingVal = parseFloat(document.getElementById('minRating').value);
+            const recommendationCountVal = parseInt(document.getElementById('recommendationCount').value);
+            const additionalPrefsVal = document.getElementById('additionalPrefs').value.trim();
+
+            // UI Transitions
+            document.getElementById('preferenceView').style.display = 'none';
+            document.getElementById('ctaContainer').style.display = 'none';
+            
+            document.getElementById('loadingSkeleton').style.display = 'block';
+
+            const payload = {
+                location: locationVal,
+                budget: selectedBudget,
+                cuisine: cuisineVal,
+                min_rating: minRatingVal,
+                recommendation_count: recommendationCountVal
+            };
+
+            if (additionalPrefsVal) {
+                payload.additional_preferences = additionalPrefsVal;
+            }
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            try {
+                const response = await fetch('/v1/recommendations', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload)
+                });
+
+                document.getElementById('loadingSkeleton').style.display = 'none';
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    showToast(errData.detail || `Server error (${response.status})`);
+                    document.getElementById('preferenceView').style.display = 'block';
+                    document.getElementById('ctaContainer').style.display = 'block';
+                    return;
+                }
+
+                const data = await response.json();
+                
+                // Show results view
+                document.getElementById('resultsView').style.display = 'block';
+                document.getElementById('refineBtn').style.display = 'flex';
+
+                if (data.summary) {
+                    document.getElementById('aiSummaryText').innerText = data.summary;
+                    document.getElementById('aiSummaryBanner').style.display = 'block';
+                }
+
+                const container = document.getElementById('recommendationsContainer');
+                container.innerHTML = '';
+                
+                if (!data.recommendations || data.recommendations.length === 0) {
+                    container.innerHTML = `
+                        <div class="glass-card rounded-xl p-8 text-center">
+                            <span class="material-symbols-outlined text-[48px] text-primary mb-4">search_off</span>
+                            <h2 class="font-headline-md text-on-surface">No Restaurants Found</h2>
+                            <p class="text-on-surface-variant">${data.message || 'Try widening your preferences.'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const seenKeys = new Set();
+                const uniqueRecs = data.recommendations.filter(rec => {
+                    const key = `${(rec.name || '').toLowerCase().trim()}`;
+                    if (seenKeys.has(key)) return false;
+                    seenKeys.add(key);
+                    return true;
+                });
+
+                // Default placeholder image
+                const fallbackImg = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80";
+
+                uniqueRecs.forEach((rec, idx) => {
+                    let formattedCost = typeof rec.estimated_cost === 'number' 
+                        ? `₹${rec.estimated_cost} for two` : rec.estimated_cost;
+                    
+                    const ratingStr = rec.rating !== null ? parseFloat(rec.rating).toFixed(1) : 'N/A';
+
+                    const card = document.createElement('article');
+                    card.className = "reveal-animation glass-card rounded-xl overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-[1.01]";
+                    card.style.animationDelay = `${idx * 0.1}s`;
+
+                    const cuisinePills = rec.cuisine.split(',').map(c => 
+                        `<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-caption font-label-md">${escapeHtml(c.trim())}</span>`
+                    ).join('');
+
+                    card.innerHTML = `
+                        <div class="relative h-48 w-full">
+                            <!-- In a real app we'd fetch actual restaurant photos, using fallback for now -->
+                            <img alt="${escapeHtml(rec.name)}" class="w-full h-full object-cover" src="${fallbackImg}" />
+                            <div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
+                                <span class="material-symbols-outlined text-yellow-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="font-label-md text-label-md">${ratingStr}</span>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(rec.name)}</h3>
+                                    <p class="text-on-surface-variant font-caption text-caption flex items-center gap-1 mt-1">
+                                        <span class="material-symbols-outlined text-[16px]">location_on</span> ${escapeHtml(rec.location)}
+                                    </p>
+                                </div>
+                                <span class="text-tertiary font-label-md text-label-md">${escapeHtml(formattedCost)}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                ${cuisinePills}
+                            </div>
+                            <div class="ai-glow rounded-lg p-4 border border-white/5 space-y-2 mt-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+                                    <span class="text-primary font-label-md text-label-md">AI Match Reasoning</span>
+                                </div>
+                                <p class="text-on-surface-variant font-caption text-caption leading-snug">
+                                    "${escapeHtml(rec.explanation)}"
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                document.getElementById('metaModel').innerText = data.metadata.model;
+                document.getElementById('metaLatency').innerText = `${data.metadata.latency_ms}ms`;
+                document.getElementById('metaCandidates').innerText = data.metadata.candidates_considered;
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loadingSkeleton').style.display = 'none';
+                document.getElementById('preferenceView').style.display = 'block';
+                document.getElementById('ctaContainer').style.display = 'block';
+                showToast('Network error.');
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

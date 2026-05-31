@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GourmetAI - Results Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#ddc0c0",
+                    "surface": "#111317",
+                    "tertiary-container": "#00baa7",
+                    "secondary-container": "#5d04d2",
+                    "surface-container-low": "#1a1c20",
+                    "error": "#ffb4ab",
+                    "surface-dim": "#111317",
+                    "on-tertiary-container": "#00443c",
+                    "secondary-fixed-dim": "#d1bcff",
+                    "primary": "#ffb2b7",
+                    "on-tertiary": "#003731",
+                    "on-primary-fixed": "#40000e",
+                    "tertiary": "#3cddc7",
+                    "on-primary-container": "#751427",
+                    "secondary-fixed": "#eaddff",
+                    "inverse-primary": "#a43947",
+                    "surface-container-highest": "#333539",
+                    "surface-variant": "#333539",
+                    "outline-variant": "#564243",
+                    "on-secondary-fixed-variant": "#5800c8",
+                    "on-primary-fixed-variant": "#842131",
+                    "background": "#111317",
+                    "tertiary-fixed": "#62fae3",
+                    "inverse-on-surface": "#2f3035",
+                    "primary-fixed-dim": "#ffb2b7",
+                    "primary-container": "#ff7e8b",
+                    "on-secondary": "#3d008f",
+                    "on-background": "#e2e2e8",
+                    "on-error": "#690005",
+                    "outline": "#a48a8b",
+                    "surface-container-lowest": "#0c0e12",
+                    "inverse-surface": "#e2e2e8",
+                    "on-primary": "#65061d",
+                    "on-secondary-container": "#c8afff",
+                    "surface-container": "#1e2024",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#3cddc7",
+                    "on-surface": "#e2e2e8",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed": "#00201c",
+                    "secondary": "#d1bcff",
+                    "on-tertiary-fixed-variant": "#005047",
+                    "surface-tint": "#ffb2b7",
+                    "surface-container-high": "#282a2e",
+                    "surface-bright": "#37393e",
+                    "primary-fixed": "#ffdadb",
+                    "on-secondary-fixed": "#24005b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "container-margin": "24px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "caption": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Outfit"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Outfit"],
+                    "headline-lg": ["Outfit"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Outfit"]
+            },
+            "fontSize": {
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(164, 57, 71, 0.15);
+            background: linear-gradient(135deg, rgba(255, 178, 183, 0.1), rgba(209, 188, 255, 0.1));
+        }
+        .reveal-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-xl shadow-primary/5">
+<div class="flex justify-between items-center px-container-margin py-4 w-full max-w-[1440px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+<span class="font-display-lg text-headline-md bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">GourmetAI</span>
+</div>
+<button class="material-symbols-outlined text-primary hover:bg-white/5 transition-colors p-2 rounded-full">settings</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin max-w-2xl mx-auto space-y-stack-lg">
+<!-- AI Summary Banner -->
+<section class="reveal-animation glass-card rounded-xl p-6 border-l-4 border-primary">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="font-headline-md text-headline-md text-primary">✨ AI Insights</h2>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                Based on your preference for <span class="text-primary font-bold">Omasake</span> and <span class="text-secondary font-bold">Modern Industrial</span> aesthetics, I've curated these three gems. They prioritize seasonal freshness and intimate seating, matching your "Celebratory Night Out" profile at 98%.
+            </p>
+</section>
+<!-- Restaurant List -->
+<div class="space-y-stack-md">
+<!-- Card 1 -->
+<article class="reveal-animation glass-card rounded-xl overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-[1.01]" style="animation-delay: 0.1s;">
+<div class="relative h-48 w-full">
+<img alt="Saito Modern" class="w-full h-full object-cover" data-alt="A high-end, contemporary sushi restaurant interior with dark obsidian counters and warm golden spotlights illuminating a chef preparing nigiri. The atmosphere is sophisticated and moody, featuring sleek glass textures and a background of deep midnight blue tones. The lighting is focused and dramatic, highlighting the crystalline textures of the glassware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqP29o-k4dIOz5mH5xsCuFBMWz6uXQEPauRy1-pS7fV_Ri8E8bA2s4l6aNRWlptFYOUHYYZoCkN8E0asJb8HVhjRUqU2G2oeIcHoUnf8alpv76EjO0OIy08JEJEbW_zimooNhrYVaWszbs6StMb2H-vt5XD07VsABWUEf0p68R9rDqXDJq-p9oeQCGqSXN6ovt22vaxRf_9qcvEhWLOuxxLYibOt5rj1Bv-WbyxEZBEVdt1EBwHTjinaWnE_8dy0oAXrKslGykZLA"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-yellow-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.9</span>
+</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Saito Modern</h3>
+<p class="text-on-surface-variant font-caption text-caption flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Minato-ku, Tokyo
+                            </p>
+</div>
+<span class="text-tertiary font-label-md text-label-md">$$$$</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-caption font-label-md">Sushi</span>
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-caption font-label-md">Omasake</span>
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-caption font-label-md">Wine Pairing</span>
+</div>
+<div class="ai-glow rounded-lg p-4 border border-white/5 space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+<span class="text-primary font-label-md text-label-md">AI Match Reasoning</span>
+</div>
+<p class="text-on-surface-variant font-caption text-caption leading-snug">
+                            "Match identified: Saito's minimalist aesthetic aligns with your saved gallery. Their current seasonal menu features the bluefin tuna you recently searched for."
+                        </p>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="reveal-animation glass-card rounded-xl overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-[1.01]" style="animation-delay: 0.2s;">
+<div class="relative h-48 w-full">
+<img alt="Lumière Lounge" class="w-full h-full object-cover" data-alt="A luxury rooftop lounge at twilight with panoramic city views in the background. The foreground features plush velvet seating in deep plum and brushed copper tables. Soft, ambient purple and coral lighting glows from hidden architectural recesses, creating an intelligent luxury aesthetic with high-end glass craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYbzHBZM9wfv-cJh1rX3JxciETQPJUcYAncYzYh0XpEVSXQvOxFIo6ckfhaKb2vjMUarLXcjmFmgXBaluu9Iyb4mUeBHA3LrxX2k7ub2Flfvp5rj_8gFG0pYLtuPOrtPZ-U_oADNy23cwRe9doZVK2meZHTywwUjO14oMJ2wIEiSN3PfkxK--CzFvuasQBeQ4LK1G-VNvFTKx8V0lVwTCnffLSV8VPHyfXIH5x3Q9TcVdJrULX1HbaYNXQi8MUlSnl3fcS9esYy_o"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-yellow-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.7</span>
+</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Lumière Lounge</h3>
+<p class="text-on-surface-variant font-caption text-caption flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Upper East Side, NYC
+                            </p>
+</div>
+<span class="text-tertiary font-label-md text-label-md">$$$</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-caption font-label-md">Modern French</span>
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-caption font-label-md">Rooftop</span>
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-caption font-label-md">Cocktails</span>
+</div>
+<div class="ai-glow rounded-lg p-4 border border-white/5 space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+<span class="text-primary font-label-md text-label-md">AI Match Reasoning</span>
+</div>
+<p class="text-on-surface-variant font-caption text-caption leading-snug">
+                            "Match identified: Your preference for low-light ambiance. Lumière is currently hosting a guest mixologist you followed on social media last month."
+                        </p>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="reveal-animation glass-card rounded-xl overflow-hidden flex flex-col group transition-transform duration-300 hover:scale-[1.01]" style="animation-delay: 0.3s;">
+<div class="relative h-48 w-full">
+<img alt="Ember &amp; Vine" class="w-full h-full object-cover" data-alt="An intimate, rustic-modern kitchen setting with a focus on an open fire hearth. The color palette includes deep earthy charcoals and vibrant greens from fresh herbs. A crystalline water carafe reflects the warm flame light, capturing the gourmet kitchen warmth combined with high-tech precision. The atmosphere is cozy yet ultra-premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYwbyCdnf6IPur9Jc4o93-vGELvgForNCFoxL6P7z7DoWkTZR1un2lAneE8AwcG2B55GOn9FJTj6hFkkkHbDIuujUmtb24lMCBticSgfg5zwXffVSZK0ZMVdGCVuidNneAKQrel_7x0KTiaTUfYCFYrrOTRwaqTNs_KymsBrg0LMAzBzpYC9_LtY6h9LYDgtxJFD42DG4wvIWVMbJsVTjEbVLEPjzVaES4RR64d1JaKvYR_CiCunF9EZWzrLyZu8WpmSW_AKmXaF4"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
+<span class="material-symbols-outlined text-yellow-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.8</span>
+</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Ember &amp; Vine</h3>
+<p class="text-on-surface-variant font-caption text-caption flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Shoreditch, London
+                            </p>
+</div>
+<span class="text-tertiary font-label-md text-label-md">$$$</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-caption font-label-md">Fire Grill</span>
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-caption font-label-md">Farm to Table</span>
+<span class="bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-caption font-label-md">Organic</span>
+</div>
+<div class="ai-glow rounded-lg p-4 border border-white/5 space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">psychology</span>
+<span class="text-primary font-label-md text-label-md">AI Match Reasoning</span>
+</div>
+<p class="text-on-surface-variant font-caption text-caption leading-snug">
+                            "Match identified: Highly recommended by users with similar dining history. It offers the quiet acoustic environment you prefer for Saturday evenings."
+                        </p>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 z-50 bg-primary text-on-primary font-label-md text-label-md px-6 py-4 rounded-full shadow-2xl shadow-primary/40 flex items-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">tune</span>
+        Refine Search
+    </button>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container/80 dark:bg-surface-container/80 backdrop-blur-2xl border-t border-white/5 shadow-[0_-8px_32px_rgba(0,0,0,0.5)]">
+<div class="flex justify-around items-center px-gutter pb-6 pt-3">
+<a class="flex flex-col items-center justify-center text-primary font-bold bg-primary/10 rounded-full px-4 py-1 translate-y-[-2px] transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-caption text-caption">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary/80 transition-all" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-caption text-caption">Saved</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary/80 transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-caption text-caption">History</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interactions for glass cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            });
+        });
+
+        // Simple entrance effect logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-animation');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('article').forEach(el => observer.observe(el));
+    </script>
+</body></html>

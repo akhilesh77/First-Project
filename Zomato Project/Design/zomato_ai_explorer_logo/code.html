@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF7E8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4D67;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.05)" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+  <path d="M70 130C70 130 80 145 100 145C120 145 130 130 130 130" stroke="url(#grad1)" stroke-width="8" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M100 50V70M100 130V150M60 100H40M160 100H140" stroke="white" stroke-opacity="0.5" stroke-width="4" stroke-linecap="round"/>
+  <path d="M130 70L120 80M80 120L70 130M130 130L120 120M80 80L70 70" stroke="white" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="100" cy="100" r="15" fill="white" filter="url(#glow)"/>
+  <path d="M100 80L105 95L120 100L105 105L100 120L95 105L80 100L95 95L100 80Z" fill="url(#grad1)"/>
+</svg>
