@@ -75,7 +75,8 @@ def get_api_key() -> Optional[str]:
 
 
 def get_cors_origins() -> List[str]:
-    raw = os.getenv("CORS_ORIGINS", "*")
+    # Support both CORS_ORIGINS and CORS_ALLOWED_ORIGINS (commonly configured for Vercel frontends)
+    raw = os.getenv("CORS_ORIGINS") or os.getenv("CORS_ALLOWED_ORIGINS") or "*"
     if raw.strip() == "*":
         return ["*"]
     return [o.strip() for o in raw.split(",") if o.strip()]
