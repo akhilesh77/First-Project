@@ -407,6 +407,10 @@
     </button>
 
     <script>
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') && window.location.port !== '8000'
+            ? 'http://localhost:8000'
+            : '';
+
         // Set up Lucide for static icons just in case
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -444,7 +448,7 @@
         async function fetchLocations() {
             const locationSelect = document.getElementById('location');
             try {
-                const res = await fetch('/v1/locations');
+                const res = await fetch(`${API_BASE}/v1/locations`);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
 
@@ -545,7 +549,7 @@
             };
 
             try {
-                const response = await fetch('/v1/recommendations', {
+                const response = await fetch(`${API_BASE}/v1/recommendations`, {
                     method: 'POST',
                     headers: headers,
                     body: JSON.stringify(payload)
