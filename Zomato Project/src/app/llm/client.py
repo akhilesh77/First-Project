@@ -47,7 +47,7 @@ class GrokClient:
         self._max_retries = max_retries
 
         if not self._api_key:
-            raise GrokClientError("LLM API key is not configured (set XAI_API_KEY or LLM_API_KEY)")
+            raise GrokClientError("LLM API key is not configured (set GROQ_API_KEY or LLM_API_KEY)")
 
     def chat_completion(self, messages: List[Dict[str, str]]) -> str:
         """Call Grok and return assistant message content."""

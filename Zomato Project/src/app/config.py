@@ -81,15 +81,15 @@ def get_cors_origins() -> List[str]:
     return [o.strip() for o in raw.split(",") if o.strip()]
 
 
-# --- xAI Grok (Phase 4) ---
+# --- Groq LLM (Phase 4) ---
 
-DEFAULT_LLM_BASE_URL = "https://api.x.ai/v1"
-DEFAULT_LLM_MODEL = "grok-3"
+DEFAULT_LLM_BASE_URL = "https://api.groq.com/openai/v1"
+DEFAULT_LLM_MODEL = "llama-3.3-70b-versatile"
 
 
 def get_llm_api_key() -> Optional[str]:
-    """xAI API key (XAI_API_KEY preferred, LLM_API_KEY fallback)."""
-    return (os.getenv("XAI_API_KEY") or os.getenv("LLM_API_KEY") or "").strip() or None
+    """Groq API key (GROQ_API_KEY preferred, LLM_API_KEY fallback)."""
+    return (os.getenv("GROQ_API_KEY") or os.getenv("LLM_API_KEY") or "").strip() or None
 
 
 def get_llm_base_url() -> str:
@@ -97,7 +97,7 @@ def get_llm_base_url() -> str:
 
 
 def get_llm_model() -> str:
-    """Grok model id (e.g. grok-3, grok-2-1212, grok-4.3)."""
+    """LLM model id (e.g. llama-3.3-70b-versatile)."""
     return os.getenv("LLM_MODEL", DEFAULT_LLM_MODEL).strip()
 
 
@@ -114,7 +114,7 @@ def get_llm_max_tokens() -> int:
 
 
 def is_llm_enabled() -> bool:
-    """Use Grok when enabled and API key is configured."""
+    """Use LLM when enabled and API key is configured."""
     flag = os.getenv("LLM_ENABLED", "true").strip().lower()
     if flag in {"0", "false", "no", "off"}:
         return False
